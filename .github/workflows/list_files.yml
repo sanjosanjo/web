@@ -5,6 +5,11 @@ on:
     branches:
       - main # Change this to your publishing branch if it's not 'main'
 
+permissions:
+  contents: read # Required to read the files in the repo
+  pages: write   # Required to upload the artifact
+  id-token: write # Required for secure deployment (OIDC)
+  
 jobs:
   pages-directory-listing:
     runs-on: ubuntu-latest
