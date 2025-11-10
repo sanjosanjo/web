@@ -3,28 +3,31 @@ name: Generate Directory Listings
 on:
   push:
     branches:
-      - main # Change this to your publishing branch if it's not 'main'
+      - main # Your primary branch
 
-permissions:
-  contents: read # Required to read the files in the repo
-  pages: write   # Required to upload the artifact
-  id-token: write # Required for secure deployment (OIDC)
-  
+permissions: # Permissions Fix
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   pages-directory-listing:
     runs-on: ubuntu-latest
+    
+    environment: # <-- ENVIRONMENT FIX
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Generate Directory Listings
-        # This action creates an index.html file in every folder
-        # that lists the files/subdirectories within it.
         uses: jayanta525/github-pages-directory-listing@v4.0.0
         with:
-          FOLDER: . # Generate listings starting from the root of the repo
-
-      - name: Deploy to GitHub Pages
+          FOLDER: .
+          
+      - name: Deploy to GitHub Pages (Artifact Upload)
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
